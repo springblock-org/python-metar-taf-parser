@@ -334,6 +334,21 @@ class FunctionTestCase(unittest.TestCase):
 
 class TAFParserTestCase(unittest.TestCase):
 
+    def test_parse_corrected_without_delivery_time(self):
+        code = """
+        TAF MDSD COR 202200Z 2100/2200 14008KT 9999 FEW018CB SCT020 BKN300 
+            TEMPO 2102/2106 TS FEW014CB FEW016 BKN300 2104/2106 04004KT
+        """
+        taf = TAFParser().parse(code)
+        self.assertTrue(taf.corrected)
+        self.assertEqual('MDSD', taf.station)
+        self.assertEqual(20, taf.day)
+        self.assertEqual(22, taf.validity.end_day)
+        self.assertEqual(0, taf.validity.end_hour)
+        self.assertEqual(21, taf.validity.start_day)
+        self.assertEqual(0, taf.validity.start_hour)
+
+
     def test_parse_without_delivery_time(self):
         code = """
         TAF KNYL 2603/2703 20006KT 9999 SKC QNH2974INS

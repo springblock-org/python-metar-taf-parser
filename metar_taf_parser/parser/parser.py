@@ -268,12 +268,17 @@ class TAFParser(AbstractParser):
         index = 1
         if TAFParser.TAF == lines[0][1]:
             index = 2
+            
         if _parse_flags(taf, lines[0][index]):
             index += 1
 
         taf.station = lines[0][index]
         index += 1
         taf.message = input
+        
+        while(_parse_flags(taf, lines[0][index])):
+            index += 1
+
         if parse_delivery_time(taf, lines[0][index]):
             index += 1
         taf.validity = _parse_validity(lines[0][index])
